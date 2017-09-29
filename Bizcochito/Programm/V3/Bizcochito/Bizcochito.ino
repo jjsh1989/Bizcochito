@@ -12,7 +12,7 @@ Author:	Julio JSH und Alberto GA
 // MCP23017 16-Bit I/O Expander with Serial Interface
 Adafruit_MCP23017 MCP1;
 
-// Ein-/ Ausgängen bei Arduino
+// Ein-/ AusgÃ¤ngen bei Arduino
 // Digital
 #define	Selektor	2
 #define Starter		4
@@ -28,30 +28,30 @@ Adafruit_MCP23017 MCP1;
 // Servo
 Servo Servo0;				// "Rutsche"
 Servo Servo1;				// "Drehgelenk"
-Servo Servo2;				// "Vorzurück"
+Servo Servo2;				// "VorzurÃ¼ck"
 Servo Servo3;				// "Abheben"
 Servo Servo4;				// "Klammer"
 
-							// Variablem
-boolean Geschwindigkeit;	//
+// Variablem
+boolean Geschwindigkeit;		//
 
-							//Schalter
+//Schalter
 boolean Zustand1;			//
 
 
-							// Taster
+// Taster
 boolean TasterS0;			// Digital real Taster "Starter"
 boolean Zustand2;			// 
 boolean TasterJY1;			// Digital read Joystick 1 Taster
 boolean TasterJY2;			// Digital read Joystick 2 Taster
 
-							// Poti
+// Poti
 byte PotiJY_X1;				// Analog read Joystick 1 Poti X
 byte PotiJY_Y1;				// Analog read Joystick 1 Poti Y
 byte PotiJY_X2;				// Analog read Joystick 2 Poti X
 byte PotiJY_Y2;				// Analog read Joystick 2 Poti Y
 
-							// Grad bei Servos
+// Grade bei Servos
 byte Grad0 = 0;
 byte Grad1 = 165;
 byte Grad2 = 80;
@@ -74,44 +74,44 @@ boolean FunktionTaster_Joystick2;
 boolean LetzterFunktionTaster_Joystick2;
 
 void setup() {
-	// Starte die MCP23017 mit addresse 0x20
+// Starte die MCP23017 mit addresse 0x20
 	MCP1.begin(0);
 
-	// Analog Referez "Default = 5V"
+// Analog Referez "Default = 5V"
 	analogReference(DEFAULT);
 
-	// Serial Beginne
+// Serial Beginne
 	Serial.begin(9600);
 
-	// Ausgängen bei Servos
-	Servo0.attach(3);	// Pin PWM Nummer 3
-	Servo1.attach(5);	// Pin PWM Nummer 5 
-	Servo2.attach(6);	// Pin PWM Nummer 6
-	Servo3.attach(9);	// Pin PWM Nummer 9
-	Servo4.attach(10);	// Pin PWM Nummer 10
+// AusgÃ¤ngen bei Servos
+	Servo0.attach(3);		// Pin PWM Nummer 3
+	Servo1.attach(5);		// Pin PWM Nummer 5 
+	Servo2.attach(6);		// Pin PWM Nummer 6
+	Servo3.attach(9);		// Pin PWM Nummer 9
+	Servo4.attach(10);		// Pin PWM Nummer 10
 
-						// Einstellung bei Arduino Pin
+// Einstellung bei Arduino Pin
 	pinMode(Selektor, INPUT);
 	pinMode(Starter, INPUT);
 	pinMode(Joystick1, INPUT);
 	pinMode(Joystick2, INPUT);
 
-	// Einstellung bei MCP23017 Pin
-	MCP1.pinMode(0, INPUT);	// Selektor Joystick oder Taster
-	MCP1.pinMode(1, INPUT); // Geschwindigkeit
-	MCP1.pinMode(2, INPUT);	// Servo0 +
-	MCP1.pinMode(3, INPUT); // Servo0 -
-	MCP1.pinMode(4, INPUT);	// Servo1 +
-	MCP1.pinMode(5, INPUT); // Servo1 -
-	MCP1.pinMode(6, INPUT);	// Servo2 +
-	MCP1.pinMode(7, INPUT);	// Servo2 -
-	MCP1.pinMode(8, INPUT);	// Servo3 +
-	MCP1.pinMode(9, INPUT);	// Servo3 -
+// Einstellung bei MCP23017 Pin
+	MCP1.pinMode(0, INPUT);		// Selektor Joystick oder Taster
+	MCP1.pinMode(1, INPUT); 	// Geschwindigkeit
+	MCP1.pinMode(2, INPUT);		// Servo0 +
+	MCP1.pinMode(3, INPUT); 	// Servo0 -
+	MCP1.pinMode(4, INPUT);		// Servo1 +
+	MCP1.pinMode(5, INPUT); 	// Servo1 -
+	MCP1.pinMode(6, INPUT);		// Servo2 +
+	MCP1.pinMode(7, INPUT);		// Servo2 -
+	MCP1.pinMode(8, INPUT);		// Servo3 +
+	MCP1.pinMode(9, INPUT);		// Servo3 -
 	MCP1.pinMode(10, INPUT);	// Servo4 +
 	MCP1.pinMode(10, INPUT);	// Servo4 -
 
 
-								//Beginnen Position
+//Beginnen Position
 	Servo0.write(Grad0);
 	Servo1.write(Grad1);
 	Servo2.write(Grad2);
@@ -347,32 +347,32 @@ void Automatisch(byte LetzterPosicion, byte NeuesPosition, String ServoName, byt
 }
 
 void ManualeDrehung() {
-	/*----------------------------------------------------------------------------------------------------------------------------------------------*/
-	/*																	 Links																		*/
-	/*----------------------------------------------------------------------------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------------------------------------------------------------------*/
+/*																	 Links																		*/
+/*----------------------------------------------------------------------------------------------------------------------------------------------*/
 	if (PotiJY_X1 >= -86 && PotiJY_X1 <= -20) {
 		Grad1 = Grad1 - 1;
 	}
 	if (PotiJY_X1 <= -85) {
 		Grad1 = Grad1 - 10;
 	}
-	/*----------------------------------------------------------------------------------------------------------------------------------------------*/
-	/*																	 Rechts																		*/
-	/*----------------------------------------------------------------------------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------------------------------------------------------------------*/
+/*																	 Rechts																		*/
+/*----------------------------------------------------------------------------------------------------------------------------------------------*/
 	if (PotiJY_X1 <= 84 && PotiJY_X1 >= 20) {
 		Grad1 = Grad1 + 1;
 	}
 	if (PotiJY_X1 >= 85) {
 		Grad1 = Grad1 + 10;
 	}
-	/*----------------------------------------------------------------------------------------------------------------------------------------------*/
-	/*																	 Limite																		*/
-	/*----------------------------------------------------------------------------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------------------------------------------------------------------*/
+/*																	 Limite																		*/
+/*----------------------------------------------------------------------------------------------------------------------------------------------*/
 	if (Grad1 < 11) { Grad1 = 11; }
 	if (Grad1 > 179) { Grad1 = 179; }
-	/*----------------------------------------------------------------------------------------------------------------------------------------------*/
-	/*																	 Bewegung																	*/
-	/*----------------------------------------------------------------------------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------------------------------------------------------------------*/
+/*																	 Bewegung																	*/
+/*----------------------------------------------------------------------------------------------------------------------------------------------*/
 	Servo1.write(Grad1);
 }
 
